@@ -25,11 +25,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.citiesapp.R
 import com.citiesapp.ui.theme.CitiesAppTheme
+import com.citiesapp.ui.theme.Dimen10dp
+import com.citiesapp.ui.theme.Dimen15dp
+import com.citiesapp.ui.theme.Dimen2dp
+import com.citiesapp.ui.theme.Dimen55dp
+import com.citiesapp.ui.theme.TextSizeDimen14dp
 import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
 
@@ -44,15 +51,15 @@ fun TopBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp) //TODO: Agregar dimen a dimens.xml
-            .height(56.dp) //TODO: Agregar dimen a dimens.xml
+            .padding(Dimen15dp)
+            .height(Dimen55dp)
             .background(Color.White)
     ) {
         if (backEnabled) {
             IconButton(onClick = onBackPressed) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back" //TODO: Agregar texto a strings.xml
+                    contentDescription = stringResource(id = R.string.back_content_description),
                 )
             }
         }
@@ -62,7 +69,7 @@ fun TopBar(
             color = Color.Black,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp), //TODO: Agregar dimen a dimens.xml
+                .padding(start = Dimen15dp),
             textAlign = TextAlign.Start
         )
     }
@@ -81,7 +88,7 @@ fun SearchBarCustom(searchValue: (String) -> Unit, modifier: Modifier = Modifier
         onActiveChange = { active = it },
         placeholder = { Text("Search") },
         modifier = modifier
-            .padding(start = 12.dp, top = 2.dp, end = 12.dp, bottom = 12.dp) //TODO: Agregar dimen a dimens.xml
+            .padding(start = Dimen10dp, top = Dimen2dp, end = Dimen10dp, bottom = Dimen10dp)
             .fillMaxWidth(),
         leadingIcon = {
             Icon(
@@ -100,13 +107,8 @@ fun SearchBarCustom(searchValue: (String) -> Unit, modifier: Modifier = Modifier
         },
         colors = SearchBarDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-        ),
-        tonalElevation = 0.dp, //TODO: Agregar dimen a dimens.xml
-    ) {
-        filteredItems.forEach { item ->
-            DescriptionText(text = "${item.name}, ${item.country}", fontSize = 15.sp) // TODO: Agregar dimen a dimens.xml y texto a strings.xml
-        }
-    }
+        )
+    ) {}
 }
 
 @Preview(showBackground = true)
@@ -116,7 +118,7 @@ private fun BarPreview() {
         Column {
             TopBar(title = "Ciudades", backEnabled = false)
             TopBar(title = "Ciudades")
-            SearchBarCustom(mockCities)
+            SearchBarCustom({_:String -> })
         }
     }
 }

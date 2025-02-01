@@ -20,10 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.citiesapp.R
 import com.citiesapp.ui.theme.CitiesAppTheme
+import com.citiesapp.ui.theme.Dimen10dp
+import com.citiesapp.ui.theme.Dimen15dp
+import com.citiesapp.ui.theme.TextSizeDimen14dp
+import com.citiesapp.ui.theme.TextSizeDimen20dp
 import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
 
@@ -35,17 +39,17 @@ fun CityItem(city: CityModel,
     var favorite by remember { mutableStateOf(city.isFavorite) }
     Row(
         modifier = modifier
-            .shadow(10.dp, shape = RoundedCornerShape(16.dp)) //TODO: Agregar dimen a dimens.xml
+            .shadow(Dimen10dp, shape = RoundedCornerShape(Dimen15dp))
             .background(Color.White)
             .fillMaxWidth()
-            .padding(16.dp), //TODO: Agregar dimen a dimens.xml
+            .padding(Dimen15dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            RegularText(text = "${city.name}, ${city.country}", fontSize = 18.sp) //TODO: Agregar dimen a dimens.xml y texto a string.xml
-            RegularText(text = "${city.coordenates.first}, ${city.coordenates.second}", fontSize = 14.sp, color = Color.Gray) //TODO: Agregar dimen a dimens.xml y texto a string.xml
+            RegularText(text = stringResource(id = R.string.formated_city_data, city.name, city.country), fontSize = TextSizeDimen20dp)
+            RegularText(text = stringResource(id = R.string.formated_city_data, city.coordenates.first, city.coordenates.second), fontSize = TextSizeDimen14dp, color = Color.Gray)
         }
         IconButton(onClick = {
             favorite = !favorite
@@ -53,7 +57,7 @@ fun CityItem(city: CityModel,
         }) {
             Icon(
                 imageVector = if (favorite) Icons.Filled.Star else Icons.Outlined.Star,
-                contentDescription = "Favorite", //TODO: Agregar texto a string.xml
+                contentDescription = stringResource(id = R.string.favorites_content_description),
                 tint = if (favorite) Color.Yellow else Color.Gray
             )
         }
@@ -65,8 +69,8 @@ fun CityItem(city: CityModel,
 private fun ListItemPreview() {
     CitiesAppTheme {
         Column {
-            CityItem(mockCities.first(), modifier = Modifier.padding(15.dp)) {} //TODO: Agregar dimen a dimens.xml
-            CityItem(mockCities[2], modifier = Modifier.padding(15.dp)) {} //TODO: Agregar dimen a dimens.xml
+            CityItem(mockCities.first(), modifier = Modifier.padding(Dimen15dp)) {}
+            CityItem(mockCities[2], modifier = Modifier.padding(Dimen15dp)) {}
         }
     }
 }

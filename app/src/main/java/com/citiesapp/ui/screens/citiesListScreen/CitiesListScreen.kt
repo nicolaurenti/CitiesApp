@@ -15,12 +15,17 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.citiesapp.R
 import com.citiesapp.ui.components.CityItem
 import com.citiesapp.ui.components.SearchBarCustom
 import com.citiesapp.ui.components.TopBar
 import com.citiesapp.ui.theme.CitiesAppTheme
+import com.citiesapp.ui.theme.Dimen15dp
+import com.citiesapp.ui.theme.Dimen2dp
+import com.citiesapp.ui.theme.Dimen5dp
+import com.citiesapp.ui.theme.Dimen10dp
 import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
 
@@ -45,19 +50,20 @@ fun CitiesListScreen(cities: List<CityModel>, onFavoriteClick: (Boolean, Int) ->
 @Composable
 private fun CitiesListPortraitView(cities: List<CityModel>, onFavoriteClick: (Boolean, Int) -> Unit, onCityClick: (CityModel) -> Unit) {
     Column(modifier = Modifier.wrapContentSize()) {
-        TopBar(title = "Ciudades") //TODO: Agregar el titulo a string.xml
+        TopBar(title = stringResource(id = R.string.cities_title))
         SearchBarCustom({})
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            contentPadding = PaddingValues(16.dp) // TODO: Agregar dimen a dimens.xml
+            contentPadding = PaddingValues(Dimen15dp)
         ) {
             itemsIndexed(cities) { _, city ->
                 CityItem(
                     city = city,
-                    modifier = Modifier.clickable { onCityClick(city) }
-                        .padding(bottom = 8.dp), // TODO: Agregar dimen a dimens.xml
+                    modifier = Modifier
+                        .clickable { onCityClick(city) }
+                        .padding(bottom = Dimen10dp),
                     onFavoriteClick = { favorite ->
                         onFavoriteClick(favorite, city.id)
                     }
@@ -73,18 +79,20 @@ fun CitiesListLandscapeView(cities: List<CityModel>, onFavoriteClick: (Boolean, 
         modifier = Modifier
             .fillMaxHeight()
     ) {
-        TopBar(title = "Ciudades", backEnabled = false) //TODO: Agregar el titulo a string.xml
+        TopBar(title = stringResource(id = R.string.cities_title), backEnabled = false)
         SearchBarCustom({})
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(top = 5.dp)  //TODO: Agregar dimen a dimens.xml
+            contentPadding = PaddingValues(top = Dimen5dp)
         ) {
             itemsIndexed(cities) { _, city ->
                 CityItem(
                     city = city,
-                    modifier = Modifier.padding(bottom = 2.dp).clickable { onCityClick(city) }, //TODO: Agregar dimen a dimens.xml
+                    modifier = Modifier
+                        .padding(bottom = Dimen2dp)
+                        .clickable { onCityClick(city) },
                     onFavoriteClick = { favorite ->
-                        onFavoriteClick(favorite, city.id) //TODO: Agregar dimen a dimens.xml
+                        onFavoriteClick(favorite, city.id)
                     }
                 )
             }

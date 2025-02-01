@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">CitiesApp</string>
     <string name="city_detail">"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto asperiores, at atque cumque cupiditate eveniet ex exercitationem fuga, iure libero nobis nostrum numquam odit perferendis quia"</string>
+    <string name="city_detail_title">City Detail</string>
+    <string name="cities_title">Cities</string>"
+    <string name="favorites_content_description">Favorite</string>
+    <string name="formated_city_data">%1s, %2s</string>
+    <string name="latitude_text">Latitude: %s</string>
+    <string name="longitude_text">Longitude: %s</string>
+    <string name="back_content_description">Back</string>
 </resources>

@@ -24,6 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.citiesapp.R
 import com.citiesapp.ui.theme.CitiesAppTheme
+import com.citiesapp.ui.theme.Dimen10dp
+import com.citiesapp.ui.theme.Dimen15dp
+import com.citiesapp.ui.theme.Dimen50dp
+import com.citiesapp.ui.theme.Dimen5dp
+import com.citiesapp.ui.theme.TextSizeDimen12dp
+import com.citiesapp.ui.theme.TextSizeDimen20dp
+import com.citiesapp.ui.theme.TextSizeDimen25dp
 import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
 
@@ -34,18 +41,18 @@ fun CityCard(
     onFavoriteClick: (Boolean, Int) -> Unit
 ) {
     Card(
-        modifier = modifier.padding(16.dp), //TODO: Agregar dimen a dimens.xml
-        elevation = CardDefaults.cardElevation(10.dp), //TODO: Agregar dimen a dimens.xml
-        shape = RoundedCornerShape(16.dp), //TODO: Agregar dimen a dimens.xml
+        modifier = modifier.padding(Dimen15dp),
+        elevation = CardDefaults.cardElevation(Dimen10dp),
+        shape = RoundedCornerShape(Dimen15dp),
     ) {
         val favorite by remember { mutableStateOf(city.isFavorite) }
             Column(
-                modifier = Modifier.padding(16.dp) //TODO: Agregar dimen a dimens.xml
+                modifier = Modifier.padding(Dimen15dp)
             ) {
                 Row {
                     TitleText(
-                        text = "${city.name}, ${city.country}",
-                        fontSize = 25.sp, //TODO: Agregar dimen a dimens.xml
+                        text = stringResource(id = R.string.formated_city_data, city.name, city.country),
+                        fontSize = TextSizeDimen25dp,
                         color = Color.Black,
                         modifier = Modifier.weight(1f)
                     )
@@ -54,29 +61,29 @@ fun CityCard(
                     }) {
                         Icon(
                             imageVector = if (favorite) Icons.Filled.Star else Icons.Outlined.Star,
-                            contentDescription = "Favorite",
+                            contentDescription = stringResource(id = R.string.favorites_content_description),
                             tint = if (favorite) Color.Yellow else Color.Gray,
-                            modifier = Modifier.size(50.dp) //TODO: Agregar dimen a dimens.xml
+                            modifier = Modifier.size(Dimen50dp)
                         )
                     }
                 }
                 DescriptionText(
-                    text = "Latitud: ${city.coordenates.first}",
-                    fontSize = 21.sp, //TODO: Agregar dimen a dimens.xml
+                    text = stringResource(id = R.string.latitude_text, city.coordenates.first),
+                    fontSize = TextSizeDimen20dp,
                     color = Color.Gray,
-                    modifier = Modifier.padding(top = 10.dp) //TODO: Agregar dimen a dimens.xml
+                    modifier = Modifier.padding(top = Dimen10dp)
                 )
                 DescriptionText(
-                    text = "Longitud: ${city.coordenates.second}",
-                    fontSize = 21.sp, //TODO: Agregar dimen a dimens.xml
+                    text = stringResource(id = R.string.longitude_text, city.coordenates.second),
+                    fontSize = TextSizeDimen20dp,
                     color = Color.Gray,
-                    modifier = Modifier.padding(top = 5.dp) //TODO: Agregar dimen a dimens.xml
+                    modifier = Modifier.padding(top = Dimen5dp)
                 )
                 RegularText(
                     text = stringResource(id = R.string.city_detail),
-                    fontSize = 12.sp, //TODO: Agregar dimen a dimens.xml
-                    modifier = Modifier.padding(top = 10.dp) //TODO: Agregar dimen a dimens.xml
-                ) // TODO(Pasar este texto como parametro)
+                    fontSize = TextSizeDimen12dp,
+                    modifier = Modifier.padding(top = Dimen10dp)
+                )
             }
     }
 }

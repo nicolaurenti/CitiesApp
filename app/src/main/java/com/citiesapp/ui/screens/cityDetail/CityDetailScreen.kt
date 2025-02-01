@@ -9,11 +9,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.citiesapp.R
 import com.citiesapp.ui.components.CityCard
 import com.citiesapp.ui.components.TopBar
 import com.citiesapp.ui.theme.CitiesAppTheme
+import com.citiesapp.ui.theme.SpacerWidth
 import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
 
@@ -39,7 +42,7 @@ fun CityDetailScreen(city: CityModel, onBackPressed: () -> Unit, onFavoriteClick
 @Composable
 private fun CityDetailPortraitView(city: CityModel, onBackPressed: () -> Unit, onFavoriteClick: (Boolean, Int) -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(title = "City Detail", onBackPressed = { onBackPressed() }) //TODO: Agregar el titulo a string.xml
+        TopBar(title = stringResource(id = R.string.city_detail_title), onBackPressed = { onBackPressed() })
         CityCard(
             city = city,
             onFavoriteClick = onFavoriteClick
@@ -51,13 +54,15 @@ private fun CityDetailPortraitView(city: CityModel, onBackPressed: () -> Unit, o
 @Composable
 private fun CityDetailLandscapeView(city: CityModel, onBackPressed: () -> Unit, onFavoriteClick: (Boolean, Int) -> Unit) {
     Row(modifier = Modifier.fillMaxSize()) {
+        TopBar(title = stringResource(id = R.string.city_detail_title), onBackPressed = { onBackPressed() })
         CityCard(
             city = city,
             modifier = Modifier.weight(0.5f),
-            onFavoriteClick = { _, _ -> }
+            onFavoriteClick = { isFavourite: Boolean, id: Int -> onFavoriteClick(isFavourite, id) }
         )
-        Spacer(modifier = Modifier.width(50.dp).weight(0.5f)) //TODO(Agregar el mapa aca)
-        //TODO: Agregar dimen a dimens.xml
+        Spacer(modifier = Modifier
+            .width(SpacerWidth)
+            .weight(0.5f)) //TODO(Agregar el mapa aca)
     }
 }
 
