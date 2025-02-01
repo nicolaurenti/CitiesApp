@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "CitiesApp"
 include(":app")
+include(":domain")
+include(":data")
