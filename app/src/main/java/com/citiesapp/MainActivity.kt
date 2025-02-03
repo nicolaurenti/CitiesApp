@@ -10,14 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.citiesapp.ui.navigation.AppNavigation
 import com.citiesapp.ui.theme.CitiesAppTheme
-import com.citiesapp.ui.theme.Poppins
 import com.citiesapp.viewmodel.CitiesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,7 +33,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         viewModel.getCities()
                         val cities = viewModel.cities.collectAsState().value
-                        AppNavigation(cities = cities, onFavoriteClick = viewModel::onFavoriteClick)
+                        AppNavigation(cities = cities, onFavoriteClick = viewModel::onFavoriteClick, onShowFavoritesClicked = viewModel::onShowingFavorites, searchValue = viewModel::getSearchedCities)
                     }
                 }
             }

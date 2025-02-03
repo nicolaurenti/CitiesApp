@@ -13,7 +13,12 @@ import com.domain.model.CityModel
 import com.google.gson.Gson
 
 @Composable
-fun AppNavigation(cities: List<CityModel>, onFavoriteClick: (Boolean, Int) -> Unit) {
+fun AppNavigation(
+    cities: List<CityModel>,
+    onFavoriteClick: (Int) -> Unit,
+    onShowFavoritesClicked: (Boolean) -> Unit,
+    searchValue: (String) -> Unit
+) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = AppScreen.CitiesListScreen.route) {
@@ -24,7 +29,9 @@ fun AppNavigation(cities: List<CityModel>, onFavoriteClick: (Boolean, Int) -> Un
                 onCityClick = { city ->
                     val cityJson = Uri.encode(Gson().toJson(city))
                     navController.navigate("${AppScreen.CityDetailScreen.route}/$cityJson")
-                }
+                },
+                onShowFavoritesClicked = onShowFavoritesClicked,
+                searchValue = searchValue
             )
         }
 
@@ -39,7 +46,7 @@ fun AppNavigation(cities: List<CityModel>, onFavoriteClick: (Boolean, Int) -> Un
                 CityDetailScreen(
                     city = it,
                     onBackPressed = { navController.popBackStack() },
-                    onFavoriteClick = { isFavorite, id -> onFavoriteClick(isFavorite, id) }
+                    onFavoriteClick = { id -> onFavoriteClick(id) }
                 )
             }
         }

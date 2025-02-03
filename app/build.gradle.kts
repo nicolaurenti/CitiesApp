@@ -1,9 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.org.jetbrains.kotlin.kapt)
     alias(libs.plugins.hilt)
 }
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+val mapsApiKey = localProperties.getProperty("GOOGLE_MAPS_API_KEY")
 
 android {
     namespace = "com.citiesapp"
@@ -20,6 +29,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = mapsApiKey ?: ""
     }
 
     buildTypes {
@@ -52,32 +62,48 @@ android {
 }
 
 dependencies {
+    // Project modules
     implementation(project(":domain"))
-    testImplementation(libs.core.testing)
-    implementation(libs.hilt.android)
-    implementation(libs.play.services.maps)
-    kapt(libs.hilt.compiler)
+
+    // Android core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(project(":data"))
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+    testImplementation(libs.hilt.android.testing)
+    kaptTest(libs.hilt.compiler)
+
+    // Jetpack Compose
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.hilt.navigation.compose)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // Google Maps
+    implementation(libs.play.services.maps)
     implementation(libs.maps.compose)
+
+    // Coil
     implementation(libs.coil.compose)
+
+    // Gson
+    implementation(libs.gson)
+
+    // Testing
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.hilt.android.testing)
-    kaptTest(libs.hilt.compiler)
+    testImplementation(libs.core.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.gson)
 }

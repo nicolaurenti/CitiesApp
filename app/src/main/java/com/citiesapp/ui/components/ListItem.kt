@@ -24,6 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.citiesapp.R
 import com.citiesapp.ui.theme.CitiesAppTheme
+import com.citiesapp.ui.theme.CustomBlue
+import com.citiesapp.ui.theme.CustomRed
 import com.citiesapp.ui.theme.Dimen10dp
 import com.citiesapp.ui.theme.Dimen15dp
 import com.citiesapp.ui.theme.TextSizeDimen14dp
@@ -34,7 +36,7 @@ import com.domain.model.CityModel
 @Composable
 fun CityItem(city: CityModel,
              modifier: Modifier = Modifier,
-             onFavoriteClick: (Boolean) -> Unit
+             onFavoriteClick: (Int) -> Unit
 ) {
     var favorite by remember { mutableStateOf(city.isFavorite) }
     Row(
@@ -53,12 +55,12 @@ fun CityItem(city: CityModel,
         }
         IconButton(onClick = {
             favorite = !favorite
-            onFavoriteClick(favorite)
+            onFavoriteClick(city.id)
         }) {
             Icon(
                 imageVector = if (favorite) Icons.Filled.Star else Icons.Outlined.Star,
                 contentDescription = stringResource(id = R.string.favorites_content_description),
-                tint = if (favorite) Color.Yellow else Color.Gray
+                tint = if (favorite) CustomRed else Color.Gray
             )
         }
     }

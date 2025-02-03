@@ -1,6 +1,7 @@
 package com.citiesapp.ui.screens.citiesListScreen
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,28 +32,67 @@ import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
 
 @Composable
-fun CitiesListScreen(cities: List<CityModel>, onFavoriteClick: (Boolean, Int) -> Unit, onCityClick: (CityModel) -> Unit) {
+fun CitiesListScreen(
+    cities: List<CityModel>,
+    onFavoriteClick: (Int) -> Unit,
+    onCityClick: (CityModel) -> Unit,
+    onShowFavoritesClicked: (Boolean) -> Unit,
+    searchValue: (String) -> Unit
+) {
     val configuration = LocalConfiguration.current
     when (configuration.orientation) {
         Configuration.ORIENTATION_LANDSCAPE -> {
-            CitiesListLandscapeView(cities, onFavoriteClick, onCityClick)
+            CitiesListLandscapeView(
+                cities = cities,
+                onFavoriteClick = onFavoriteClick,
+                onCityClick = onCityClick,
+                onShowFavoritesClicked = onShowFavoritesClicked,
+                searchValue = searchValue
+            )
         }
 
         Configuration.ORIENTATION_PORTRAIT -> {
-            CitiesListPortraitView(cities, onFavoriteClick, onCityClick)
+            CitiesListPortraitView(
+                cities = cities,
+                onFavoriteClick = onFavoriteClick,
+                onCityClick = onCityClick,
+                onShowFavoritesClicked = onShowFavoritesClicked,
+                searchValue = searchValue
+            )
         }
+
         else -> {
-            CitiesListPortraitView(cities, onFavoriteClick, onCityClick)
+            CitiesListPortraitView(
+                cities = cities,
+                onFavoriteClick = onFavoriteClick,
+                onCityClick = onCityClick,
+                onShowFavoritesClicked = onShowFavoritesClicked,
+                searchValue = searchValue
+            )
         }
     }
 }
 
 
 @Composable
-private fun CitiesListPortraitView(cities: List<CityModel>, onFavoriteClick: (Boolean, Int) -> Unit, onCityClick: (CityModel) -> Unit) {
-    Column(modifier = Modifier.wrapContentSize()) {
-        TopBar(title = stringResource(id = R.string.cities_title))
-        SearchBarCustom({})
+private fun CitiesListPortraitView(
+    cities: List<CityModel>,
+    onFavoriteClick: (Int) -> Unit,
+    onCityClick: (CityModel) -> Unit,
+    onShowFavoritesClicked: (Boolean) -> Unit,
+    searchValue: (String) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .wrapContentSize()
+            .background(Color.White)
+    ) {
+        TopBar(
+            title = stringResource(id = R.string.cities_title),
+            backEnabled = false,
+            onShowFavoritesClicked = onShowFavoritesClicked
+        )
+        SearchBarCustom(searchValue)
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -64,8 +105,8 @@ private fun CitiesListPortraitView(cities: List<CityModel>, onFavoriteClick: (Bo
                     modifier = Modifier
                         .clickable { onCityClick(city) }
                         .padding(bottom = Dimen10dp),
-                    onFavoriteClick = { favorite ->
-                        onFavoriteClick(favorite, city.id)
+                    onFavoriteClick = { _ ->
+                        onFavoriteClick(city.id)
                     }
                 )
             }
@@ -74,13 +115,24 @@ private fun CitiesListPortraitView(cities: List<CityModel>, onFavoriteClick: (Bo
 }
 
 @Composable
-fun CitiesListLandscapeView(cities: List<CityModel>, onFavoriteClick: (Boolean, Int) -> Unit, onCityClick: (CityModel) -> Unit) {
+fun CitiesListLandscapeView(
+    cities: List<CityModel>,
+    onFavoriteClick: (Int) -> Unit,
+    onCityClick: (CityModel) -> Unit,
+    onShowFavoritesClicked: (Boolean) -> Unit,
+    searchValue: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
+            .background(Color.White)
     ) {
-        TopBar(title = stringResource(id = R.string.cities_title), backEnabled = false)
-        SearchBarCustom({})
+        TopBar(
+            title = stringResource(id = R.string.cities_title),
+            backEnabled = false,
+            onShowFavoritesClicked = onShowFavoritesClicked
+        )
+        SearchBarCustom(searchValue)
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(top = Dimen5dp)
@@ -91,8 +143,8 @@ fun CitiesListLandscapeView(cities: List<CityModel>, onFavoriteClick: (Boolean, 
                     modifier = Modifier
                         .padding(bottom = Dimen2dp)
                         .clickable { onCityClick(city) },
-                    onFavoriteClick = { favorite ->
-                        onFavoriteClick(favorite, city.id)
+                    onFavoriteClick = { _ ->
+                        onFavoriteClick(city.id)
                     }
                 )
             }
@@ -106,7 +158,7 @@ fun CitiesListLandscapeView(cities: List<CityModel>, onFavoriteClick: (Boolean, 
 private fun CitiesListScreenPreview() {
     CitiesAppTheme {
         Column(Modifier.fillMaxSize()) {
-            CitiesListScreen(mockCities, { _, _ -> }) { _ -> }
+            CitiesListScreen(mockCities, { _ -> }, { _ -> }, { _ -> }) { _ -> }
         }
     }
 }

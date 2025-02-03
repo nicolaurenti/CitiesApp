@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.citiesapp.R
 import com.citiesapp.ui.theme.CitiesAppTheme
+import com.citiesapp.ui.theme.CustomBlue
+import com.citiesapp.ui.theme.CustomRed
 import com.citiesapp.ui.theme.Dimen10dp
 import com.citiesapp.ui.theme.Dimen15dp
 import com.citiesapp.ui.theme.Dimen50dp
@@ -38,7 +40,7 @@ import com.domain.model.CityModel
 fun CityCard(
     city: CityModel,
     modifier: Modifier = Modifier,
-    onFavoriteClick: (Boolean, Int) -> Unit
+    onFavoriteClick: (Int) -> Unit
 ) {
     Card(
         modifier = modifier.padding(Dimen15dp),
@@ -57,12 +59,12 @@ fun CityCard(
                         modifier = Modifier.weight(1f)
                     )
                     IconButton(onClick = {
-                        onFavoriteClick(favorite, city.id)
+                        onFavoriteClick(city.id)
                     }) {
                         Icon(
                             imageVector = if (favorite) Icons.Filled.Star else Icons.Outlined.Star,
                             contentDescription = stringResource(id = R.string.favorites_content_description),
-                            tint = if (favorite) Color.Yellow else Color.Gray,
+                            tint = if (favorite) CustomRed else Color.Gray,
                             modifier = Modifier.size(Dimen50dp)
                         )
                     }
@@ -95,7 +97,7 @@ private fun CardPreview() {
         Column {
             CityCard(
                 mockCities.first()
-            ) {_, _ ->}
+            ) {_ ->}
         }
     }
 }
