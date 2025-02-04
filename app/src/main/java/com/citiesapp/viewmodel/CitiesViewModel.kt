@@ -112,7 +112,6 @@ class CitiesViewModel @Inject constructor(private val citiesUseCase: CitiesUseCa
         _filteredCities.value = cities
     }
 
-
     fun onFavoriteClick(id: Int) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             citiesUseCase.updateFavorite(id)

@@ -7,8 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.citiesapp.ui.screens.citiesListScreen.CitiesListScreen
-import com.citiesapp.ui.screens.cityDetail.CityDetailScreen
+import com.citiesapp.ui.screens.CitiesListScreen
+import com.citiesapp.ui.screens.CityDetailScreen
 import com.domain.model.CityModel
 import com.google.gson.Gson
 

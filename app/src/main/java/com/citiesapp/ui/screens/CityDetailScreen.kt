@@ -1,4 +1,4 @@
-package com.citiesapp.ui.screens.cityDetail
+package com.citiesapp.ui.screens
 
 import android.content.res.Configuration
 import android.util.Log
