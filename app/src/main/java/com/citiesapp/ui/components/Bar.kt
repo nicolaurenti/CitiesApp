@@ -165,7 +165,7 @@ fun SearchBarCustom(searchValue: (String) -> Unit) {
             },
             singleLine = true,
             colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = CustomBlue,
+                focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.White,
                 disabledIndicatorColor = Color.White,
                 focusedContainerColor = Color.White,

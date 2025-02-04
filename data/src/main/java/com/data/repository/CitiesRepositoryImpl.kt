@@ -15,18 +15,28 @@ class CitiesRepositoryImpl @Inject constructor(
 ) : CitiesRepository {
 
     override suspend fun getCities(): CoroutineResult<List<CityModel>> {
-        val localCities = citiesDao.getAllCities()
+        val localCities = citiesDao.getCities()
         return if (localCities.isNotEmpty()) {
             CoroutineResult.Success(localCities.map { it.toModel() })
         } else {
             when (val remoteResult = service.getCitiesList()) {
                 is CoroutineResult.Success -> {
-                    citiesDao.insertCities(remoteResult.data.map { it.toDBModel() })
+                    citiesDao.insertCities(remoteResult.data.sortedBy { it.name + it.country }
+                        .map { it.toDBModel() })
                     remoteResult
                 }
 
                 is CoroutineResult.Failure -> CoroutineResult.Failure(Exception("ERROR"))
             }
+        }
+    }
+
+    override suspend fun getMoreCities(offset: Int): CoroutineResult<List<CityModel>> {
+        val moreCities = citiesDao.getCities(offset)
+        return if (moreCities.isNotEmpty()) {
+            CoroutineResult.Success(moreCities.map { it.toModel() })
+        } else {
+            CoroutineResult.Failure(Exception("ERROR"))
         }
     }
 
@@ -43,6 +53,15 @@ class CitiesRepositoryImpl @Inject constructor(
 
                 is CoroutineResult.Failure -> CoroutineResult.Failure(Exception("ERROR"))
             }
+        }
+    }
+
+    override suspend fun searchCities(query: String): CoroutineResult<List<CityModel>> {
+        val result = citiesDao.searchCitiesStartingWith(query)
+        return if (result.isEmpty()) {
+            CoroutineResult.Failure(Exception("EMPTY LIST"))
+        } else {
+            CoroutineResult.Success(result.map { it.toModel() })
         }
     }
 

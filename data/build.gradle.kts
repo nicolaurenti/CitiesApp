@@ -63,7 +63,6 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
 
     // Room
-    // Room
     implementation(libs.room.runtime)
     kapt(libs.room.compiler)
     implementation(libs.room.ktx)

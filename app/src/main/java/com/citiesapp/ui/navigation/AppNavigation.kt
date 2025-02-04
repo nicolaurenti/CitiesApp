@@ -17,7 +17,9 @@ fun AppNavigation(
     cities: List<CityModel>,
     onFavoriteClick: (Int) -> Unit,
     onShowFavoritesClicked: (Boolean) -> Unit,
-    searchValue: (String) -> Unit
+    searchValue: (String) -> Unit,
+    loadMoreCities: () -> Unit,
+    isLoading: Boolean
 ) {
     val navController = rememberNavController()
 
@@ -31,7 +33,9 @@ fun AppNavigation(
                     navController.navigate("${AppScreen.CityDetailScreen.route}/$cityJson")
                 },
                 onShowFavoritesClicked = onShowFavoritesClicked,
-                searchValue = searchValue
+                searchValue = searchValue,
+                loadMoreCities = loadMoreCities,
+                isLoading = isLoading
             )
         }
 

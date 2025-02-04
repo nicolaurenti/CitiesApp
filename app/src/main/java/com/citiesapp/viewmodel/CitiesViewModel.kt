@@ -1,9 +1,7 @@
 package com.citiesapp.viewmodel
 
-import androidx.collection.mutableIntListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
 import com.domain.usecase.CitiesUseCase
 import com.domain.util.CoroutineResult
@@ -12,47 +10,108 @@ import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class CitiesViewModel @Inject constructor(private val citiesUseCase: CitiesUseCase) : ViewModel() {
 
-    private var favoritesCities: List<CityModel> = listOf()
-    private var citiesList: List<CityModel> = listOf()
+    private var currentPage = 0
+    private var cities = mutableListOf<CityModel>()
+    private var showingFavorites = false
+    private val _filteredCities = MutableStateFlow<List<CityModel>>(emptyList())
+    val filteredCities: StateFlow<List<CityModel>> = _filteredCities
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
     private val _errorStatus = MutableStateFlow(CitiesErrors.NO_ERROR)
-    private val _cities = MutableStateFlow<List<CityModel>>(emptyList())
-    val cities: StateFlow<List<CityModel>> = _cities
+    val errorStatus: StateFlow<CitiesErrors> = _errorStatus.asStateFlow()
 
     fun getCities() = viewModelScope.launch {
         withContext(Dispatchers.IO) { citiesUseCase.getCities() }.let { it ->
             when (it) {
                 is CoroutineResult.Failure -> _errorStatus.value = CitiesErrors.SERVER
                 is CoroutineResult.Success -> {
-                    val citiesFromRepository = it.data.sortedBy { it.name+it.country }
-                    _cities.value = citiesFromRepository
-                    citiesList = citiesFromRepository
-                    favoritesCities = citiesList.filter { city -> city.isFavorite }
+                    val citiesFromRepository = it.data
+                    cities.addAll(citiesFromRepository)
+                    _filteredCities.value = citiesFromRepository
                 }
             }
         }
     }
 
     fun onShowingFavorites(showFavorites: Boolean) = viewModelScope.launch {
+        this@CitiesViewModel.showingFavorites = showFavorites
+        if (showFavorites) {
+            withContext(Dispatchers.IO) { citiesUseCase.getFavoritesCities() }.let {
+                when (it) {
+                    is CoroutineResult.Failure -> {
+                        _errorStatus.value = CitiesErrors.INTERNAL_ERROR
+                    }
+
+                    is CoroutineResult.Success -> {
+                        _filteredCities.value = it.data
+                    }
+                }
+            }
+        } else {
+            citiesUseCase.getCities().let {
+                when (it) {
+                    is CoroutineResult.Failure -> {
+                        _errorStatus.value = CitiesErrors.INTERNAL_ERROR
+                    }
+
+                    is CoroutineResult.Success -> {
+                        _filteredCities.value = it.data
+                    }
+                }
+            }
+        }
+    }
+
+    fun loadMoreCities() = viewModelScope.launch {
+        _isLoading.value = true
+        currentPage += 50
         withContext(Dispatchers.IO) {
-            if (showFavorites) {
-                _cities.value = favoritesCities
-            } else {
-                _cities.value = citiesList
+            citiesUseCase.getMoreCities(currentPage)
+        }.let { result ->
+            when (result) {
+                is CoroutineResult.Failure -> _errorStatus.value = CitiesErrors.INTERNAL_ERROR
+                is CoroutineResult.Success -> {
+                    cities.addAll(result.data)
+                    _isLoading.value = false
+                }
             }
         }
     }
 
     fun getSearchedCities(query: String) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
-            _cities.value.filter { it.name.lowercase().contains(query.lowercase()) }
+            if (query.isNotEmpty()) {
+                citiesUseCase.searchCities(query).let {
+                    when (it) {
+                        is CoroutineResult.Failure -> _errorStatus.value =
+                            CitiesErrors.CITIES_SEARCH_FAILED
+
+                        is CoroutineResult.Success -> {
+                            _filteredCities.value =
+                                if (showingFavorites)
+                                    it.data.filter { city -> city.isFavorite == showingFavorites }
+                                else
+                                    it.data
+                        }
+                    }
+                }
+            } else {
+                clearSearch()
+            }
         }
     }
+
+    private fun clearSearch() {
+        _filteredCities.value = cities
+    }
+
 
     fun onFavoriteClick(id: Int) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
@@ -62,6 +121,8 @@ class CitiesViewModel @Inject constructor(private val citiesUseCase: CitiesUseCa
 
     enum class CitiesErrors {
         NO_ERROR,
-        SERVER
+        INTERNAL_ERROR,
+        SERVER,
+        CITIES_SEARCH_FAILED
     }
 }
