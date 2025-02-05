@@ -72,6 +72,7 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     implementation(project(":data"))
+    testImplementation(libs.androidx.ui.test.junit4.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     testImplementation(libs.hilt.android.testing)

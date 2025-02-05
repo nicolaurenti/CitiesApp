@@ -20,18 +20,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.citiesapp.R
 import com.citiesapp.ui.theme.CitiesAppTheme
-import com.citiesapp.ui.theme.CustomBlue
 import com.citiesapp.ui.theme.CustomRed
 import com.citiesapp.ui.theme.Dimen10dp
 import com.citiesapp.ui.theme.Dimen15dp
 import com.citiesapp.ui.theme.TextSizeDimen14dp
 import com.citiesapp.ui.theme.TextSizeDimen20dp
-import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
+import com.domain.util.mockCities
 
 @Composable
 fun CityItem(city: CityModel,
@@ -50,13 +50,13 @@ fun CityItem(city: CityModel,
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            RegularText(text = stringResource(id = R.string.formated_city_data, city.name, city.country), fontSize = TextSizeDimen20dp)
+            RegularText(text = stringResource(id = R.string.formated_city_data, city.name, city.country), fontSize = TextSizeDimen20dp, modifier = Modifier.testTag("cityText_${city.id}"))
             RegularText(text = stringResource(id = R.string.formated_city_data, city.coordenates.first, city.coordenates.second), fontSize = TextSizeDimen14dp, color = Color.Gray)
         }
         IconButton(onClick = {
             favorite = !favorite
             onFavoriteClick(city.id)
-        }) {
+        }, Modifier.testTag("favoriteButton_${city.id}")) {
             Icon(
                 imageVector = if (favorite) Icons.Filled.Star else Icons.Outlined.Star,
                 contentDescription = stringResource(id = R.string.favorites_content_description),

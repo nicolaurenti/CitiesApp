@@ -34,6 +34,7 @@ gsonVersion = "2.6.0"
 mockkVersion = "1.13.5"
 coreTestingVersion = "2.2.0"
 roomCommon = "2.6.1"
+uiTestJunit4Android = "1.6.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -81,6 +82,7 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hiltVersion" }
 core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "coreTestingVersion" }
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
+androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
 
 [plugins]
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }

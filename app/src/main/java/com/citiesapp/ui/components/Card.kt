@@ -20,11 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.citiesapp.R
 import com.citiesapp.ui.theme.CitiesAppTheme
-import com.citiesapp.ui.theme.CustomBlue
 import com.citiesapp.ui.theme.CustomRed
 import com.citiesapp.ui.theme.Dimen10dp
 import com.citiesapp.ui.theme.Dimen15dp
@@ -33,8 +30,8 @@ import com.citiesapp.ui.theme.Dimen5dp
 import com.citiesapp.ui.theme.TextSizeDimen12dp
 import com.citiesapp.ui.theme.TextSizeDimen20dp
 import com.citiesapp.ui.theme.TextSizeDimen25dp
-import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
+import com.domain.util.mockCities
 
 @Composable
 fun CityCard(

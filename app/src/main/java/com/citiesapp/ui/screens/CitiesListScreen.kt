@@ -16,8 +16,8 @@ import com.citiesapp.ui.components.PaginatedCityList
 import com.citiesapp.ui.components.SearchBarCustom
 import com.citiesapp.ui.components.TopBar
 import com.citiesapp.ui.theme.CitiesAppTheme
-import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
+import com.domain.util.mockCities
 
 @Composable
 fun CitiesListScreen(

@@ -2,6 +2,7 @@ package com.citiesapp.ui.screens
 
 import android.content.res.Configuration
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.citiesapp.R
@@ -17,8 +20,8 @@ import com.citiesapp.ui.components.CityCard
 import com.citiesapp.ui.components.TopBar
 import com.citiesapp.ui.theme.CitiesAppTheme
 import com.citiesapp.ui.theme.Dimen50dp
-import com.citiesapp.ui.theme.mockCities
 import com.domain.model.CityModel
+import com.domain.util.mockCities
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -56,16 +59,20 @@ private fun CityDetailPortraitView(city: CityModel, onBackPressed: () -> Unit, o
         TopBar(title = stringResource(id = R.string.city_detail_title), onBackPressed = { onBackPressed() })
         CityCard(
             city = city,
-            onFavoriteClick = onFavoriteClick
+            onFavoriteClick = onFavoriteClick,
+            modifier = Modifier.background(Color.White)
         )
         GoogleMap(
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier
+                .testTag("google_maps")
+                .fillMaxWidth()
+                .weight(1f),
             cameraPositionState = cameraPositionState,
         ) {
             Marker(
                 state = MarkerState(position = recipeLocation),
-                title = "Singapore",
-                snippet = "Marker in Singapore",
+                title = stringResource(id = R.string.formated_city_data, city.name, city.country),
+                snippet = "Marker in ${city.name}",
             )
         }
     }
@@ -81,17 +88,20 @@ private fun CityDetailLandscapeView(city: CityModel, onBackPressed: () -> Unit, 
         TopBar(title = stringResource(id = R.string.city_detail_title), onBackPressed = { onBackPressed() })
         CityCard(
             city = city,
-            modifier = Modifier.weight(0.5f),
-            onFavoriteClick = { id: Int -> onFavoriteClick(id) }
+            onFavoriteClick = onFavoriteClick,
+            modifier = Modifier.background(Color.White)
         )
         GoogleMap(
-            modifier = Modifier.size(Dimen50dp),
+            modifier = Modifier
+                .testTag("google_maps")
+                .fillMaxWidth()
+                .weight(1f),
             cameraPositionState = cameraPositionState,
         ) {
             Marker(
                 state = MarkerState(position = recipeLocation),
-                title = "Singapore",
-                snippet = "Marker in Singapore",
+                title = stringResource(id = R.string.formated_city_data, city.name, city.country),
+                snippet = "Marker in ${city.name}",
             )
         }
     }

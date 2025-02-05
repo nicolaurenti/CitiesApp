@@ -47,7 +47,6 @@ fun PaginatedCityList(
             )
         }
 
-        // Indicador de carga al final
         if (isLoading) {
             item {
                 CircularProgressIndicator(
@@ -60,7 +59,6 @@ fun PaginatedCityList(
         }
     }
 
-    // Detectar cuando el usuario llega al final de la lista
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastIndex ->
