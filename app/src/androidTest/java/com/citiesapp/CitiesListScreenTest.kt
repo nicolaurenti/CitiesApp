@@ -1,7 +1,8 @@
-package com.citiesapp.ui.screens
+package com.citiesapp
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import com.citiesapp.ui.screens.CitiesListScreen
 import com.citiesapp.ui.theme.CitiesAppTheme
 import com.domain.model.CityModel
 import org.junit.Rule

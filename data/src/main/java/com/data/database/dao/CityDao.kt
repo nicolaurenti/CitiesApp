@@ -15,10 +15,10 @@ interface CityDao {
     @Query("SELECT * FROM cities WHERE id = :cityId")
     suspend fun getCityById(cityId: Int): CityDBModel?
 
-    @Query("SELECT * FROM cities LIMIT 50 OFFSET :offset")
+    @Query("SELECT * FROM cities ORDER BY name, country LIMIT 50 OFFSET :offset")
     suspend fun getCities(offset: Int = 0): List<CityDBModel>
 
-    @Query("SELECT * FROM cities WHERE isFavorite = 1")
+    @Query("SELECT * FROM cities WHERE isFavorite = 1 ORDER BY name, country")
     suspend fun getFavoriteCities(): List<CityDBModel>
 
     @Query("UPDATE cities SET isFavorite = CASE WHEN isFavorite = 1 THEN 0 ELSE 1 END WHERE id = :cityId")

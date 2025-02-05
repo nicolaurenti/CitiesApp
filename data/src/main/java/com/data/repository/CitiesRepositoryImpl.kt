@@ -21,9 +21,9 @@ class CitiesRepositoryImpl @Inject constructor(
         } else {
             when (val remoteResult = service.getCitiesList()) {
                 is CoroutineResult.Success -> {
-                    citiesDao.insertCities(remoteResult.data.sortedBy { it.name + it.country }
-                        .map { it.toDBModel() })
-                    remoteResult
+                    val sortedCities = remoteResult.data.sortedBy { it.name + it.country }
+                    citiesDao.insertCities(sortedCities.map { it.toDBModel()})
+                    CoroutineResult.Success(sortedCities)
                 }
 
                 is CoroutineResult.Failure -> CoroutineResult.Failure(Exception("ERROR"))

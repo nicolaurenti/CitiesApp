@@ -40,6 +40,7 @@ fun CityDetailScreen(city: CityModel, onBackPressed: () -> Unit, onFavoriteClick
         Configuration.ORIENTATION_PORTRAIT -> {
             CityDetailPortraitView(city, onBackPressed, onFavoriteClick)
         }
+
         else -> {
             CityDetailPortraitView(city, onBackPressed, onFavoriteClick)
         }
@@ -49,14 +50,24 @@ fun CityDetailScreen(city: CityModel, onBackPressed: () -> Unit, onFavoriteClick
 }
 
 @Composable
-private fun CityDetailPortraitView(city: CityModel, onBackPressed: () -> Unit, onFavoriteClick: (Int) -> Unit) {
+private fun CityDetailPortraitView(
+    city: CityModel,
+    onBackPressed: () -> Unit,
+    onFavoriteClick: (Int) -> Unit
+) {
     val recipeLocation = LatLng(city.coordenates.first, city.coordenates.second)
     Log.i("CityDetailPortraitView", "CityDetailPortraitView: $recipeLocation")
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(recipeLocation, 10f)
     }
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(title = stringResource(id = R.string.city_detail_title), onBackPressed = { onBackPressed() })
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+    ) {
+        TopBar(
+            title = stringResource(id = R.string.city_detail_title),
+            onBackPressed = { onBackPressed() })
         CityCard(
             city = city,
             onFavoriteClick = onFavoriteClick,
@@ -79,30 +90,50 @@ private fun CityDetailPortraitView(city: CityModel, onBackPressed: () -> Unit, o
 }
 
 @Composable
-private fun CityDetailLandscapeView(city: CityModel, onBackPressed: () -> Unit, onFavoriteClick: (Int) -> Unit) {
+private fun CityDetailLandscapeView(
+    city: CityModel,
+    onBackPressed: () -> Unit,
+    onFavoriteClick: (Int) -> Unit
+) {
     val recipeLocation = LatLng(city.coordenates.first, city.coordenates.second)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(recipeLocation, 10f)
     }
-    Row(modifier = Modifier.fillMaxSize()) {
-        TopBar(title = stringResource(id = R.string.city_detail_title), onBackPressed = { onBackPressed() })
-        CityCard(
-            city = city,
-            onFavoriteClick = onFavoriteClick,
-            modifier = Modifier.background(Color.White)
-        )
-        GoogleMap(
-            modifier = Modifier
-                .testTag("google_maps")
-                .fillMaxWidth()
-                .weight(1f),
-            cameraPositionState = cameraPositionState,
-        ) {
-            Marker(
-                state = MarkerState(position = recipeLocation),
-                title = stringResource(id = R.string.formated_city_data, city.name, city.country),
-                snippet = "Marker in ${city.name}",
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxSize()
+    ) {
+        TopBar(
+            title = stringResource(id = R.string.city_detail_title),
+            onBackPressed = { onBackPressed() })
+        Row(modifier = Modifier
+            .background(Color.White)
+            .fillMaxWidth()) {
+            CityCard(
+                city = city,
+                onFavoriteClick = onFavoriteClick,
+                modifier = Modifier
+                    .background(Color.White)
+                    .weight(1f)
             )
+            GoogleMap(
+                modifier = Modifier
+                    .testTag("google_maps")
+                    .fillMaxWidth()
+                    .weight(1f),
+                cameraPositionState = cameraPositionState,
+            ) {
+                Marker(
+                    state = MarkerState(position = recipeLocation),
+                    title = stringResource(
+                        id = R.string.formated_city_data,
+                        city.name,
+                        city.country
+                    ),
+                    snippet = "Marker in ${city.name}",
+                )
+            }
         }
     }
 }
@@ -113,7 +144,7 @@ private fun CityDetailLandscapeView(city: CityModel, onBackPressed: () -> Unit, 
 private fun CityDetailScreenPreview() {
     CitiesAppTheme {
         Column(modifier = Modifier.fillMaxSize()) {
-            CityDetailScreen(mockCities.first(), {}) {_ ->}
+            CityDetailScreen(mockCities.first(), {}) { _ -> }
         }
     }
 }

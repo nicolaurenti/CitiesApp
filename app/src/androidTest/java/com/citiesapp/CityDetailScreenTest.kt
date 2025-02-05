@@ -24,7 +24,7 @@ class CityDetailScreenTest {
         }
 
         composeTestRule.onNodeWithText("City Detail").assertIsDisplayed()
-        composeTestRule.onNodeWithText(city.name).assertIsDisplayed()
+        composeTestRule.onNodeWithText("${city.name}, ${city.country}").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Back").performClick()
     }
 

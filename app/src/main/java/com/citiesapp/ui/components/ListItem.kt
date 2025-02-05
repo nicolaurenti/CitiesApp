@@ -38,7 +38,8 @@ fun CityItem(city: CityModel,
              modifier: Modifier = Modifier,
              onFavoriteClick: (Int) -> Unit
 ) {
-    var favorite by remember { mutableStateOf(city.isFavorite) }
+    var favorite by remember { mutableStateOf(false) }
+    favorite = city.isFavorite
     Row(
         modifier = modifier
             .shadow(Dimen10dp, shape = RoundedCornerShape(Dimen15dp))

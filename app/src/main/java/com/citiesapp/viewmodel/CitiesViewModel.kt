@@ -29,12 +29,14 @@ class CitiesViewModel @Inject constructor(private val citiesUseCase: CitiesUseCa
 
     fun getCities() = viewModelScope.launch {
         withContext(Dispatchers.IO) { citiesUseCase.getCities() }.let { it ->
+            cities = mutableListOf()
+            currentPage = 0
             when (it) {
                 is CoroutineResult.Failure -> _errorStatus.value = CitiesErrors.SERVER
                 is CoroutineResult.Success -> {
                     val citiesFromRepository = it.data
                     cities.addAll(citiesFromRepository)
-                    _filteredCities.value = citiesFromRepository
+                    _filteredCities.value = cities
                 }
             }
         }
@@ -47,6 +49,8 @@ class CitiesViewModel @Inject constructor(private val citiesUseCase: CitiesUseCa
                 when (it) {
                     is CoroutineResult.Failure -> {
                         _errorStatus.value = CitiesErrors.INTERNAL_ERROR
+                        _filteredCities.value = emptyList()
+
                     }
 
                     is CoroutineResult.Success -> {
@@ -55,17 +59,7 @@ class CitiesViewModel @Inject constructor(private val citiesUseCase: CitiesUseCa
                 }
             }
         } else {
-            citiesUseCase.getCities().let {
-                when (it) {
-                    is CoroutineResult.Failure -> {
-                        _errorStatus.value = CitiesErrors.INTERNAL_ERROR
-                    }
-
-                    is CoroutineResult.Success -> {
-                        _filteredCities.value = it.data
-                    }
-                }
-            }
+            _filteredCities.value = cities
         }
     }
 
@@ -79,6 +73,7 @@ class CitiesViewModel @Inject constructor(private val citiesUseCase: CitiesUseCa
                 is CoroutineResult.Failure -> _errorStatus.value = CitiesErrors.INTERNAL_ERROR
                 is CoroutineResult.Success -> {
                     cities.addAll(result.data)
+                    _filteredCities.value = cities
                     _isLoading.value = false
                 }
             }
@@ -90,30 +85,33 @@ class CitiesViewModel @Inject constructor(private val citiesUseCase: CitiesUseCa
             if (query.isNotEmpty()) {
                 citiesUseCase.searchCities(query).let {
                     when (it) {
-                        is CoroutineResult.Failure -> _errorStatus.value =
-                            CitiesErrors.CITIES_SEARCH_FAILED
+                        is CoroutineResult.Failure -> {
+                            _errorStatus.value = CitiesErrors.CITIES_SEARCH_FAILED
+                            _filteredCities.value = mutableListOf()
+                        }
 
                         is CoroutineResult.Success -> {
-                            _filteredCities.value =
+                            cities =
                                 if (showingFavorites)
-                                    it.data.filter { city -> city.isFavorite == showingFavorites }
+                                    it.data.filter { city -> city.isFavorite == showingFavorites }.toMutableList()
                                 else
-                                    it.data
+                                    it.data.toMutableList()
+
+                            _filteredCities.value = cities
                         }
                     }
                 }
             } else {
-                clearSearch()
+                getCities()
             }
         }
     }
 
-    private fun clearSearch() {
-        _filteredCities.value = cities
-    }
-
     fun onFavoriteClick(id: Int) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
+            cities.find { it.id == id }?.let {
+                it.isFavorite = !it.isFavorite
+            }
             citiesUseCase.updateFavorite(id)
         }
     }

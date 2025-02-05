@@ -2,7 +2,7 @@ package com.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.data.database.AppDatabase
+import com.data.database.CitiesDatabase
 import com.data.database.dao.CityDao
 import dagger.Module
 import dagger.Provides
@@ -18,13 +18,13 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+    fun provideAppDatabase(@ApplicationContext context: Context): CitiesDatabase {
         return Room
-            .databaseBuilder(context, AppDatabase::class.java, DB)
+            .databaseBuilder(context, CitiesDatabase::class.java, DB)
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideCitiesDao(citiesDatabase: AppDatabase): CityDao = citiesDatabase.cityDao()
+    fun provideCitiesDao(citiesDatabase: CitiesDatabase): CityDao = citiesDatabase.cityDao()
 }

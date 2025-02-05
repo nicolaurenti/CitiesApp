@@ -1,5 +1,6 @@
 package com.citiesapp.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -40,13 +41,13 @@ fun CityCard(
     onFavoriteClick: (Int) -> Unit
 ) {
     Card(
-        modifier = modifier.padding(Dimen15dp),
+        modifier = modifier.background(Color.White).padding(Dimen15dp),
         elevation = CardDefaults.cardElevation(Dimen10dp),
         shape = RoundedCornerShape(Dimen15dp),
     ) {
         val favorite by remember { mutableStateOf(city.isFavorite) }
             Column(
-                modifier = Modifier.padding(Dimen15dp)
+                modifier = Modifier.background(Color.White).padding(Dimen15dp)
             ) {
                 Row {
                     TitleText(

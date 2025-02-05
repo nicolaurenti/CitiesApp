@@ -59,12 +59,14 @@ fun PaginatedCityList(
         }
     }
 
-    LaunchedEffect(listState) {
-        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
-            .collect { lastIndex ->
-                if (lastIndex != null && lastIndex >= cities.size - 5) {
-                    loadMoreCities()
+    if (cities.size > 10) {
+        LaunchedEffect(listState) {
+            snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+                .collect { lastIndex ->
+                    if (lastIndex != null && lastIndex >= cities.size - 5) {
+                        loadMoreCities()
+                    }
                 }
-            }
+        }
     }
 }
