@@ -111,10 +111,34 @@ Se implementaron **queries** eficientes para obtener información sin necesidad 
 
 ## 📸 Screenshots  
 
-#### Portrait
-#### Landscape
+#### Cities List
+
+
+https://github.com/user-attachments/assets/424a0029-6a67-4ada-b466-8505cf36f74b
+
+
+#### City Detail
+
+
+https://github.com/user-attachments/assets/0a535ef1-995e-4e97-a7f4-e79b2be71937
+
+
 #### Favorites
+
+
+https://github.com/user-attachments/assets/000091ec-361a-4fc0-8c99-3c1470ee2f82
+
+
+
+https://github.com/user-attachments/assets/eb89486c-90b1-4f3b-be2d-0fb4a89418bd
+
+
+
 #### Search
+
+
+https://github.com/user-attachments/assets/386630e9-1d23-4eba-8bdd-598bffa445b0
+
 
 ---
 
@@ -122,5 +146,5 @@ Se implementaron **queries** eficientes para obtener información sin necesidad 
 
 - Se agregó la **API key de Google Maps** en `local.properties` para evitar exponerla públicamente y mejorar la seguridad.  
 - Se aplicaron los principios **SOLID** en el desarrollo.  
-- Se utilizó el patrón **Repository** para la gestión de datos en la capa Domain.  
+- Se utilizó el patrón **Repository** para la gestión de datos en la capa Data.  
 - Se adoptó una estrategia **Cache-First**, priorizando la información almacenada localmente, ya que los datos del **gist** no se actualizan dinámicamente.  
