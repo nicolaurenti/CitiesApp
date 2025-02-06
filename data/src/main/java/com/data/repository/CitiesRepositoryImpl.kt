@@ -42,18 +42,7 @@ class CitiesRepositoryImpl @Inject constructor(
 
     override suspend fun getFavoriteCities(): CoroutineResult<List<CityModel>> {
         val localCities = citiesDao.getFavoriteCities()
-        return if (localCities.isNotEmpty()) {
-            CoroutineResult.Success(localCities.map { it.toModel() })
-        } else {
-            when (val remoteResult = service.getCitiesList()) {
-                is CoroutineResult.Success -> {
-                    citiesDao.insertCities(remoteResult.data.map { it.toDBModel() })
-                    remoteResult
-                }
-
-                is CoroutineResult.Failure -> CoroutineResult.Failure(Exception("ERROR"))
-            }
-        }
+        return CoroutineResult.Success(localCities.map { it.toModel() })
     }
 
     override suspend fun searchCities(query: String): CoroutineResult<List<CityModel>> {
